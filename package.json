@@ -1,16 +1,17 @@
 {
   "dependencies": {
-    "express": "^5.2.1",
-    "npm": "^11.7.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "framer-motion": "^10.16.16"
+    "express": "^5.2.1",
+    "framer-motion": "^10.16.16",
+    "npm": "^11.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
+    "gh-pages": "^6.3.0",
     "vite": "^5.0.8"
   },
   "name": "unsplash-slideshow",
@@ -24,7 +25,9 @@
     "client:dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "proxy": "http://localhost:5000",
   "repository": {
@@ -33,9 +36,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Sintexer/unsplash-slideshow/issues"
   },
-  "homepage": "https://github.com/Sintexer/unsplash-slideshow#readme"
+  "homepage": "https://Sintexer.github.io/unsplash-slideshow"
 }

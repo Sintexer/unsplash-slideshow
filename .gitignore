@@ -4,6 +4,9 @@
 # Dependencies
 node_modules/
 
+# build
+dist/
+
 # Logs
 *.log
 npm-debug.log*

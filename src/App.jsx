@@ -3,6 +3,8 @@ import { Box, Image, Text, Spinner, Center, VStack, HStack, Spacer, Progress, Li
 
 const PHOTOS_PER_HOUR = 6
 
+const API_URL = 'https://unsplash-slideshow.onrender.com'
+
 function App() {
   const [photos, setPhotos] = useState([])
   const [loading, setLoading] = useState(true)
@@ -24,7 +26,7 @@ function App() {
       setLoading(true)
       
       // Fetch 6 photos for the current hour
-      const response = await fetch('/api/photos')
+      const response = await fetch(API_URL + '/api/photos')
       if (!response.ok) {
         throw new Error('Failed to fetch photos')
       }
