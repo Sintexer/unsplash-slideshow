@@ -115,8 +115,8 @@ app.get('/api/photos', async (req, res) => {
 
 // History endpoint - returns recent photos history
 app.get('/api/history', (req, res) => {
-  // Return history in reverse chronological order (newest first)
-  res.json({ history: [...photoHistory].reverse() });
+  // Return history in chronological order (oldest first) so frontend can display with greatest index at top
+  res.json({ history: photoHistory });
 });
 
 // Health check endpoint

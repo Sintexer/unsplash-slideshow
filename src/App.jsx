@@ -334,93 +334,195 @@ function App() {
           <ModalHeader>Photo Metadata</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <VStack spacing={4} align="stretch">
+            <Box
+              display="grid"
+              gridTemplateColumns="repeat(auto-fit, minmax(140px, 1fr))"
+              gap={3}
+            >
               {currentPhoto.width && currentPhoto.height && (
-                <Box>
-                  <Text fontWeight="bold" mb={2}>Dimensions</Text>
-                  <Text>{currentPhoto.width} × {currentPhoto.height} px</Text>
+                <Box
+                  bg="gray.700"
+                  p={3}
+                  borderRadius="md"
+                  border="1px solid"
+                  borderColor="gray.600"
+                >
+                  <HStack spacing={2} align="center">
+                    <Text fontSize="lg">📐</Text>
+                    <VStack spacing={0} align="flex-start">
+                      <Text fontSize="xs" opacity={0.7}>Size</Text>
+                      <Text fontSize="sm" fontWeight="bold">
+                        {currentPhoto.width} × {currentPhoto.height}
+                      </Text>
+                    </VStack>
+                  </HStack>
                 </Box>
               )}
               {currentPhoto.color && (
-                <Box>
-                  <Text fontWeight="bold" mb={2}>Color</Text>
-                  <HStack>
+                <Box
+                  bg="gray.700"
+                  p={3}
+                  borderRadius="md"
+                  border="1px solid"
+                  borderColor="gray.600"
+                >
+                  <HStack spacing={2} align="center">
                     <Box
-                      w="30px"
-                      h="30px"
+                      w="24px"
+                      h="24px"
                       bg={currentPhoto.color}
-                      borderRadius="md"
+                      borderRadius="sm"
                       border="1px solid"
-                      borderColor="gray.600"
+                      borderColor="gray.500"
+                      flexShrink={0}
                     />
-                    <Text>{currentPhoto.color}</Text>
+                    <VStack spacing={0} align="flex-start">
+                      <Text fontSize="xs" opacity={0.7}>Color</Text>
+                      <Text fontSize="xs" fontWeight="bold" noOfLines={1}>
+                        {currentPhoto.color}
+                      </Text>
+                    </VStack>
+                  </HStack>
+                </Box>
+              )}
+              {currentPhoto.likes !== undefined && (
+                <Box
+                  bg="gray.700"
+                  p={3}
+                  borderRadius="md"
+                  border="1px solid"
+                  borderColor="gray.600"
+                >
+                  <HStack spacing={2} align="center">
+                    <Text fontSize="lg">❤️</Text>
+                    <VStack spacing={0} align="flex-start">
+                      <Text fontSize="xs" opacity={0.7}>Likes</Text>
+                      <Text fontSize="sm" fontWeight="bold">
+                        {currentPhoto.likes.toLocaleString()}
+                      </Text>
+                    </VStack>
+                  </HStack>
+                </Box>
+              )}
+              {currentPhoto.downloads !== undefined && (
+                <Box
+                  bg="gray.700"
+                  p={3}
+                  borderRadius="md"
+                  border="1px solid"
+                  borderColor="gray.600"
+                >
+                  <HStack spacing={2} align="center">
+                    <Text fontSize="lg">⬇️</Text>
+                    <VStack spacing={0} align="flex-start">
+                      <Text fontSize="xs" opacity={0.7}>Downloads</Text>
+                      <Text fontSize="sm" fontWeight="bold">
+                        {currentPhoto.downloads.toLocaleString()}
+                      </Text>
+                    </VStack>
+                  </HStack>
+                </Box>
+              )}
+              {currentPhoto.views !== undefined && (
+                <Box
+                  bg="gray.700"
+                  p={3}
+                  borderRadius="md"
+                  border="1px solid"
+                  borderColor="gray.600"
+                >
+                  <HStack spacing={2} align="center">
+                    <Text fontSize="lg">👁️</Text>
+                    <VStack spacing={0} align="flex-start">
+                      <Text fontSize="xs" opacity={0.7}>Views</Text>
+                      <Text fontSize="sm" fontWeight="bold">
+                        {currentPhoto.views.toLocaleString()}
+                      </Text>
+                    </VStack>
                   </HStack>
                 </Box>
               )}
               {currentPhoto.created_at && (
-                <Box>
-                  <Text fontWeight="bold" mb={2}>Created At</Text>
-                  <Text>{new Date(currentPhoto.created_at).toLocaleString()}</Text>
+                <Box
+                  bg="gray.700"
+                  p={3}
+                  borderRadius="md"
+                  border="1px solid"
+                  borderColor="gray.600"
+                >
+                  <HStack spacing={2} align="center">
+                    <Text fontSize="lg">📅</Text>
+                    <VStack spacing={0} align="flex-start">
+                      <Text fontSize="xs" opacity={0.7}>Created</Text>
+                      <Text fontSize="xs" fontWeight="bold" noOfLines={1}>
+                        {new Date(currentPhoto.created_at).toLocaleDateString()}
+                      </Text>
+                    </VStack>
+                  </HStack>
                 </Box>
               )}
-              {currentPhoto.updated_at && (
-                <Box>
-                  <Text fontWeight="bold" mb={2}>Updated At</Text>
-                  <Text>{new Date(currentPhoto.updated_at).toLocaleString()}</Text>
+              {currentPhoto.exif && currentPhoto.exif.make && (
+                <Box
+                  bg="gray.700"
+                  p={3}
+                  borderRadius="md"
+                  border="1px solid"
+                  borderColor="gray.600"
+                  gridColumn="span 2"
+                >
+                  <HStack spacing={2} align="center">
+                    <Text fontSize="lg">📷</Text>
+                    <VStack spacing={0} align="flex-start">
+                      <Text fontSize="xs" opacity={0.7}>Camera</Text>
+                      <Text fontSize="xs" fontWeight="bold">
+                        {currentPhoto.exif.make} {currentPhoto.exif.model || ''}
+                      </Text>
+                    </VStack>
+                  </HStack>
                 </Box>
               )}
-              {currentPhoto.downloads !== undefined && (
-                <Box>
-                  <Text fontWeight="bold" mb={2}>Downloads</Text>
-                  <Text>{currentPhoto.downloads.toLocaleString()}</Text>
-                </Box>
-              )}
-              {currentPhoto.likes !== undefined && (
-                <Box>
-                  <Text fontWeight="bold" mb={2}>Likes</Text>
-                  <Text>{currentPhoto.likes.toLocaleString()}</Text>
-                </Box>
-              )}
-              {currentPhoto.views !== undefined && (
-                <Box>
-                  <Text fontWeight="bold" mb={2}>Views</Text>
-                  <Text>{currentPhoto.views.toLocaleString()}</Text>
-                </Box>
-              )}
-              {currentPhoto.exif && Object.keys(currentPhoto.exif).length > 0 && (
-                <Box>
-                  <Text fontWeight="bold" mb={2}>EXIF Data</Text>
-                  <VStack align="stretch" spacing={1}>
-                    {currentPhoto.exif.make && (
-                      <Text fontSize="sm">Make: {currentPhoto.exif.make}</Text>
-                    )}
-                    {currentPhoto.exif.model && (
-                      <Text fontSize="sm">Model: {currentPhoto.exif.model}</Text>
-                    )}
+              {currentPhoto.exif && (currentPhoto.exif.exposure_time || currentPhoto.exif.aperture || currentPhoto.exif.iso) && (
+                <Box
+                  bg="gray.700"
+                  p={3}
+                  borderRadius="md"
+                  border="1px solid"
+                  borderColor="gray.600"
+                  gridColumn="span 2"
+                >
+                  <HStack spacing={3} wrap="wrap">
                     {currentPhoto.exif.exposure_time && (
-                      <Text fontSize="sm">Exposure: {currentPhoto.exif.exposure_time}s</Text>
+                      <Text fontSize="xs">
+                        <Text as="span" opacity={0.7}>Exp:</Text> {currentPhoto.exif.exposure_time}s
+                      </Text>
                     )}
                     {currentPhoto.exif.aperture && (
-                      <Text fontSize="sm">Aperture: f/{currentPhoto.exif.aperture}</Text>
-                    )}
-                    {currentPhoto.exif.focal_length && (
-                      <Text fontSize="sm">Focal Length: {currentPhoto.exif.focal_length}mm</Text>
+                      <Text fontSize="xs">
+                        <Text as="span" opacity={0.7}>f/</Text>{currentPhoto.exif.aperture}
+                      </Text>
                     )}
                     {currentPhoto.exif.iso && (
-                      <Text fontSize="sm">ISO: {currentPhoto.exif.iso}</Text>
+                      <Text fontSize="xs">
+                        <Text as="span" opacity={0.7}>ISO:</Text> {currentPhoto.exif.iso}
+                      </Text>
                     )}
-                  </VStack>
+                    {currentPhoto.exif.focal_length && (
+                      <Text fontSize="xs">
+                        <Text as="span" opacity={0.7}>{currentPhoto.exif.focal_length}mm</Text>
+                      </Text>
+                    )}
+                  </HStack>
                 </Box>
               )}
-            </VStack>
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>
 
       {/* History Modal */}
-      <Modal isOpen={isHistoryOpen} onClose={onHistoryClose} size="lg">
+      <Modal isOpen={isHistoryOpen} onClose={onHistoryClose} size="xl">
         <ModalOverlay />
-        <ModalContent bg="gray.800" color="white" maxW="600px">
+        <ModalContent bg="gray.800" color="white" maxW="900px">
           <ModalHeader>Recent Photos History</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
@@ -428,10 +530,10 @@ function App() {
               <Table variant="simple" size="sm">
                 <Thead>
                   <Tr>
-                    <Th color="white">Time</Th>
+                    <Th color="white" w="60px">#</Th>
+                    <Th color="white" w="80px">Link</Th>
                     <Th color="white">Name</Th>
                     <Th color="white">Description</Th>
-                    <Th color="white">Link</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -442,34 +544,47 @@ function App() {
                       </Td>
                     </Tr>
                   ) : (
-                    history.map((item, index) => (
-                      <Tr key={index}>
-                        <Td>
-                          <Text fontSize="xs">{new Date(item.timestamp).toLocaleTimeString()}</Text>
-                        </Td>
-                        <Td>
-                          <Text fontSize="xs" fontWeight="bold" noOfLines={1}>
-                            {item.name || 'Untitled'}
-                          </Text>
-                        </Td>
-                        <Td>
-                          <Text fontSize="xs" noOfLines={2}>
-                            {item.description ? (item.description.length > 100 ? item.description.substring(0, 100) + '...' : item.description) : 'No description'}
-                          </Text>
-                        </Td>
-                        <Td>
-                          <Link
-                            href={item.link}
-                            isExternal
-                            color="yellow.100"
-                            _hover={{ color: "yellow.200", textDecoration: "underline" }}
-                            fontSize="xs"
-                          >
-                            View
-                          </Link>
-                        </Td>
-                      </Tr>
-                    ))
+                    [...history].reverse().map((item, index) => {
+                      const displayIndex = history.length - index;
+                      const truncatedDescription = item.description 
+                        ? (item.description.length > 80 ? item.description.substring(0, 80) + '...' : item.description)
+                        : 'No description';
+                      return (
+                        <Tr key={index}>
+                          <Td>
+                            <Text fontSize="xs" fontWeight="bold" opacity={0.6}>
+                              #{displayIndex}
+                            </Text>
+                          </Td>
+                          <Td>
+                            <Link
+                              href={item.link}
+                              isExternal
+                              color="yellow.100"
+                              _hover={{ color: "yellow.200", textDecoration: "underline" }}
+                              fontSize="xs"
+                            >
+                              🔗
+                            </Link>
+                          </Td>
+                          <Td>
+                            <Text
+                              color="white"
+                              fontSize="xs"
+                              fontWeight="bold"
+                              noOfLines={1}
+                            >
+                              {item.name || 'Untitled'}
+                            </Text>
+                          </Td>
+                          <Td>
+                            <Text fontSize="xs" noOfLines={1} opacity={0.8}>
+                              {truncatedDescription}
+                            </Text>
+                          </Td>
+                        </Tr>
+                      );
+                    })
                   )}
                 </Tbody>
               </Table>
