@@ -17,9 +17,12 @@ const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || 'xxxxxxx';
 let currentPhotos = []; // 6 photos for current hour
 let photoQueue = []; // Queue of extra photos
 let lastFetchTimestamp = null; // Timestamp of last fetch
+let photoHistory = []; // History of photos (max 1440)
 
 const PHOTOS_PER_HOUR = 6;
 const PHOTOS_PER_BATCH = 10;
+const MAX_HISTORY_SIZE = 1440; // 1440 photos = 24 hours * 60 minutes / 10 minutes per photo
+const PHOTO_EXPIRATION_MINUTES = 55; // Expire photos after 55 minutes instead of 1 hour
 
 // Fetch photos from Unsplash API
 async function fetchPhotosFromAPI(count) {
@@ -33,19 +36,41 @@ async function fetchPhotosFromAPI(count) {
   return await response.json();
 }
 
-// Get current hour timestamp (hour precision)
-function getCurrentHourTimestamp() {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours()).getTime();
+// Check if photos should be refreshed (55 minutes have passed)
+function shouldRefreshPhotos() {
+  if (lastFetchTimestamp === null) {
+    return true; // First fetch
+  }
+  
+  const now = new Date().getTime();
+  const elapsedMinutes = (now - lastFetchTimestamp) / (1000 * 60);
+  
+  return elapsedMinutes >= PHOTO_EXPIRATION_MINUTES;
+}
+
+// Add photo to history
+function addToHistory(photo) {
+  const historyItem = {
+    id: photo.id,
+    name: photo.user?.name || 'Unknown',
+    description: photo.description || photo.alt_description || '',
+    link: photo.links?.html || `https://unsplash.com/photos/${photo.id}`,
+    timestamp: new Date().toISOString()
+  };
+  
+  photoHistory.push(historyItem);
+  
+  // Keep only last 1440 items
+  if (photoHistory.length > MAX_HISTORY_SIZE) {
+    photoHistory.shift();
+  }
 }
 
 // Ensure we have 6 photos for current hour
 async function ensureCurrentPhotos() {
-  const currentHour = getCurrentHourTimestamp();
-  
-  // Check if new hour started
-  if (lastFetchTimestamp === null || currentHour !== lastFetchTimestamp) {
-    // New hour - get 6 new photos
+  // Check if 55 minutes have passed since last fetch
+  if (shouldRefreshPhotos()) {
+    // Time to refresh - get 6 new photos
     const needed = PHOTOS_PER_HOUR;
     const photos = [];
     
@@ -67,8 +92,11 @@ async function ensureCurrentPhotos() {
       photoQueue.push(...fetched.slice(takeCount));
     }
     
+    // Add photos to history
+    photos.forEach(photo => addToHistory(photo));
+    
     currentPhotos = photos;
-    lastFetchTimestamp = currentHour;
+    lastFetchTimestamp = new Date().getTime();
   }
   
   return currentPhotos;
@@ -83,6 +111,12 @@ app.get('/api/photos', async (req, res) => {
     console.error('Error fetching photos:', error);
     res.status(500).json({ error: 'Failed to fetch photos', message: error.message });
   }
+});
+
+// History endpoint - returns recent photos history
+app.get('/api/history', (req, res) => {
+  // Return history in reverse chronological order (newest first)
+  res.json({ history: [...photoHistory].reverse() });
 });
 
 // Health check endpoint
